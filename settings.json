@@ -1,0 +1,12 @@
+{
+  "base_url": "https://company.app.link/3p?",
+  "input_file": "lrfeedcopy.csv",
+  "output_file": "output.csv",
+
+  "templates_folder":"templates",
+  "active_template": "facebook_app_only",
+  "input_folder":"input",
+  "output_folder":"output",
+  "csv_deliminator": ","
+
+}
