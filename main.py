@@ -100,6 +100,7 @@ def parse_csv(settings):
             template_data = settings.template_data.get(settings.active_template, None)
 
             template_data['$original_url'] = row[LINK_COL_NAME_TO_REPLACE] # keep the original url
+            template_data['$fallback_url'] = row[LINK_COL_NAME_TO_REPLACE] # keep original url as fallback
 
             url = settings.base_url + parse.urlencode(template_data, safe='{}:') # safe characters do not get encoded
 
