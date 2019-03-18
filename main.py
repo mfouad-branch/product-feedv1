@@ -69,33 +69,28 @@ def merge_dictionaries(row_data, default):
 
 
 def import_settings():
+    # required attributes, fail if missing
+    settings.input_file =  sys.argv[2]
+    settings.output_file =  sys.argv[3]
+    settings.csv_deliminator =  sys.argv[5]
+    settings.base_url =  sys.argv[1]
+    settings.templates_folder = os.path.join(os.path.dirname(sys.argv[0]),  "templates")
+    settings.active_template = sys.argv[4]
 
-    if not os.path.isfile('settings.json'):
-        # settings file doesn't exist
-        raise FileNotFoundError(errno.ENOENT, os.strerror(errno.ENOENT), 'settings.json')
+    settings.get_templates()
 
-    with open('settings.json') as file:
-        data = json.load(file)
-
-        # required attributes, fail if missing
-        settings.input_file = os.path.join(os.path.dirname(sys.argv[0]), data['input_folder'], data['input_file'])
-        settings.output_file = os.path.join(os.path.dirname(sys.argv[0]), data['output_folder'], data['output_file'])
-        settings.csv_deliminator = data['csv_deliminator']
-        settings.base_url = data['base_url']
-        settings.templates_folder = os.path.join(os.path.dirname(sys.argv[0]), data['templates_folder'])
-        settings.active_template = data['active_template']
-
-        settings.get_templates()
-
-
-def parse_csv(settings):
+def row_count(settings):
     with open(settings.input_file) as csv_file:
         csv_reader = csv.DictReader(csv_file, delimiter=settings.csv_deliminator)
+        return sum(1 for row in csv_reader)
 
+
+def parse_csv(settings,row_count):
+    with open(settings.input_file) as csv_file:
+        csv_reader = csv.DictReader(csv_file, delimiter=settings.csv_deliminator)
         write_csv(settings, {str(x): str(x) for x in csv_reader.fieldnames}, 'w') # write header
-
+        current_row = 1
         for row in csv_reader:
-
             # apply template data to the url
             template_data = settings.template_data.get(settings.active_template, None)
 
@@ -107,7 +102,8 @@ def parse_csv(settings):
 
             row[LINK_COL_NAME_TO_REPLACE] = url
             write_csv(settings, row.values(), 'a') # write rows to output
-
+            print("Converted %d out of %d" % (current_row,row_count))
+            current_row +=1 
 
 
 def write_csv(settings, row, mode):
@@ -118,5 +114,7 @@ def write_csv(settings, row, mode):
 
 if __name__ == '__main__':
     import_settings()
-    parse_csv(settings)
+    row_count = row_count(settings)
+    print("Converting %d entries" % row_count)
+    parse_csv(settings,row_count)
     # write_csv(settings)
