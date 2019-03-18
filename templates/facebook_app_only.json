@@ -6,5 +6,9 @@
     "~branch_ad_format": "App Only",
     "~channel": "Facebook",
     "~feature": "paid advertising",
-    "~campaign": "{{campaign.name}}"
+    "~campaign": "{{campaign.name}}",
+    "~ad_id": "{{ad.id}}",
+    "~ad_set_id": "{{adset.id}}",
+    "~campaign_id": "{{campaign.id}}"
+
 }
