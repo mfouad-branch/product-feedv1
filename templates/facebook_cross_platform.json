@@ -4,5 +4,9 @@
     "$one_time_use": "false",
     "~branch_ad_format": "Cross-Platform Display",
     "~channel": "Facebook",
-    "~feature": "paid advertising"
+    "~feature": "paid advertising",
+    "~campaign": "{{campaign.name}}",
+    "~ad_id": "{{ad.id}}",
+    "~ad_set_id": "{{adset.id}}",
+    "~campaign_id":"{{campaign.id}}"
 }
